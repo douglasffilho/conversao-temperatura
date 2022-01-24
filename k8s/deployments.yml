@@ -1,35 +1,40 @@
+#API Deployments
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-project-deployment
+  name: conversao-temperatura-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: web-project
+      app: conversao-temperatura
   template:
     metadata:
       labels:
-        app: web-project
+        app: conversao-temperatura
     spec:
       containers:
-      - name: web-project
-        image: kubedevio/web-page:green
+      - name: app
+        image: douglasffilho/conversao-temperatura:latest
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "256Mi"
+            cpu: "1000m"
         ports:
-        - containerPort: 80
+        - containerPort: 8080
+
 ---
+
+#API Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-project-service
+  name: conversao-temperatura-service
 spec:
   selector:
-    app: web-project
+    app: conversao-temperatura
   ports:
   - protocol: TCP
     port: 80
+    targetPort: 8080
   type: LoadBalancer
